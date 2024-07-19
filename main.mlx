@@ -1,0 +1,20 @@
+clc; close all;
+[filename,pathname]=uigetfile('*.*','Pick a MATLAB code file');
+filename=strcat(pathname,filename);
+img = imread(filename);
+subplot(121);imshow(img);title('Original image');
+% Converting from RGB color mode to HSV
+HSV = rgb2hsv(img);
+% Obtaining Hue channel/matrix of the HSV color space
+H = HSV(:,:,1);
+S = HSV(:,:,2);
+% Replace Hue values that are greater than the mean
+H( H > mean2(H) ) = 0.75;
+% Replace Saturation values that are greater than the mean
+S( S > mean2(S) ) = 0.56;
+% Replacing the original HSV channel by the current one
+HSV(:,:,1) = H;
+HSV(:,:,2) = S;
+% Converting the HSV channel to RGB for displaying
+C = hsv2rgb(HSV);
+subplot(122);imshow(C,[]);title('Color Sliced');
